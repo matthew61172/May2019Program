@@ -28,6 +28,6 @@ public class ProjectApplicationTest {
 	@Test
 	public void exampleProjectTest() {
 		System.out.println("Project Test case Scenarios");
-		empService.registerEmployee(emp);
+//		empService.registerOrUpdateEmployee(emp);
 	}
 }
