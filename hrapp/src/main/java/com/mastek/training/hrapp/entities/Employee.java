@@ -1,13 +1,21 @@
 package com.mastek.training.hrapp.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,8 +31,6 @@ import org.springframework.stereotype.Component;
 @EntityListeners({EmployeeLifecycleListener.class})
 @NamedQueries({
 	@NamedQuery(name="Employee.findBySalary",query="select e from Employee e where e.salary between :min and :max")
-	
-	
 })
 public class Employee implements Serializable { // Manage serialization 
 	@Value("-1")
@@ -34,6 +40,38 @@ public class Employee implements Serializable { // Manage serialization
 	@Value("100.0")
 	private double Salary;
 	
+	private Set<Project> assignments = new HashSet<>();
+	
+	// Many to one - Each employee belongs to one department
+	private Department currentDepartment;
+	
+	// @ManyToMany => Configure the association for both the entities
+	// @JoinTable => Provides all the config for the third table
+	// name => Name of the join table
+	// JoinColumns => Foreign key column names for current class
+	// InverseJoinColumns => Foreign key column names for other class
+	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinTable(name="JPA_ASSIGNMENTS",joinColumns=@JoinColumn(name="FK_EMPNO"),inverseJoinColumns=@JoinColumn(name="FK_PROJECTID"))
+	public Set<Project> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(Set<Project> assignments) {
+		this.assignments = assignments;
+	}
+
+	// @ManyToOne => Associating the Many class to One object
+	// @JoinColumn => Configure the Foreign Key Column for association between the two entities
+	@ManyToOne
+	@JoinColumn(name="FK_DEPARTMENTNO")
+	public Department getCurrentDepartment() {
+		return currentDepartment;
+	}
+
+	public void setCurrentDepartment(Department currentDepartment) {
+		this.currentDepartment = currentDepartment;
+	}
+
 	public Employee() {
 		System.out.println("Employee created");
 	}

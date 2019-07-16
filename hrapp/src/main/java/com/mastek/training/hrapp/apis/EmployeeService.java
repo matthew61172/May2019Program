@@ -37,7 +37,6 @@ public class EmployeeService {
 
 	public void deleteByEmpno(int empno) {
 		employeeRepository.deleteById(empno);
-		
 	}
 	
 	public List<Employee> fetchEmployeesBySalaryRange(double min, double max){
