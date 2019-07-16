@@ -38,7 +38,13 @@ public class HrAppApplicationTests {
 	DepartmentService deptService;
 	
 	@Autowired
+	Department dept;
+	
+	@Autowired
 	ProjectService projService;
+	
+	@Autowired
+	Project proj;
 	
 /*	@Test
 	public void addOrUpdateEmployeeUsingService() {
