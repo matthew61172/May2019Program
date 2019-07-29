@@ -14,26 +14,35 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.Path;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
+
 @Scope("prototype")
 @Entity
 @Table(name="JPA_DEPARTMENT")
 @NamedQueries({
 	@NamedQuery(name="Department.findByDeptLocation",query="select d from Department d where d.deptLocation = :location")
 })
+@XmlRootElement
 public class Department {
 	@Value("-1")
 	private int deptno;
 	@Value("Default Department")
+	@FormParam("deptName")
 	private String deptName;
 	@Value("Default Location")
+	@FormParam("deptLocation")
 	private String deptLocation;
 	// One to many - One department has many Employees
+	
 	private Set<Employee> members = new HashSet<>();
 	
 	// @OneToMany is used on the get method to configure the association
@@ -44,10 +53,12 @@ public class Department {
 	// mappedBy => Identifies the property name in the Child class where the Join Column config is present
 	// Join Column = Foreign Key
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="currentDepartment")
+	@XmlTransient
 	public Set<Employee> getMembers() {
 		return members;
 	}
-
+	
+	
 	public void setMembers(Set<Employee> members) {
 		this.members = members;
 	}

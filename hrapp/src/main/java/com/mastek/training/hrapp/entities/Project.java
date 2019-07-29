@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,30 +13,40 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
+
 @Scope("prototype")
 @Entity
 @Table(name="JPA_PROJECT")
 @NamedQueries({
 	@NamedQuery(name="Project.findByProjCustomer",query="select p from Project p where p.custName = :customer")
 })
+@XmlRootElement
 public class Project {
 	@Value("-1")
 	private int projId;
 	@Value("Default Project")
+	@FormParam("projName")
 	private String projName;
 	@Value("Default Customer")
+	@FormParam("custName")
 	private String custName;
 	
 	private Set<Employee> team=new HashSet<>();
 	
 	// mappedBy => Check the config for Many to Many association in Employee class (getAssignments mwthod)
-	@ManyToMany(mappedBy="assignments")
+	@ManyToMany(mappedBy="assignments",fetch=FetchType.LAZY)
+	@XmlTransient
 	public Set<Employee> getTeam() {
 		return team;
 	}

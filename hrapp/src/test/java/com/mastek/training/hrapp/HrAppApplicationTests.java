@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,20 +32,20 @@ public class HrAppApplicationTests {
 	@Autowired
 	EmployeeService empService;
 	
-	@Autowired
-	Employee emp;
+/*	@Autowired
+	Employee emp;*/
 
 	@Autowired
 	DepartmentService deptService;
 	
-	@Autowired
-	Department dept;
+/*	@Autowired
+	Department dept;*/
 	
 	@Autowired
 	ProjectService projService;
 	
-	@Autowired
-	Project proj;
+/*	@Autowired
+	Project proj;*/
 	
 /*	@Test
 	public void addOrUpdateEmployeeUsingService() {
@@ -153,7 +154,7 @@ public class HrAppApplicationTests {
 		assertEquals(projs.size(),2);
 	}*/
 
-	@Test
+/*	@Test
 	public void manageAssociations() {
 		Department dept1 = new Department();
 		dept1.setDeptName("Admin");
@@ -192,6 +193,25 @@ public class HrAppApplicationTests {
 		deptService.registerOrUpdateDepartment(dept1);
 	}
 	
+	*/
 	
+/*	@Test
+	public void assignDepartmentToEmployee() {
+		int empno = 5;
+		int deptno = 39;
+		empService.assignDepartment(empno, deptno);
+		Employee emp = empService.findByEmpno(7);
+		assertNotNull(emp.getCurrentDepartment());
+	} */
+	
+	@Test
+	public void assignProjectToEmployee() {
+		int empno = 9;
+		int projId = 19;
+		
+		Set<Project> projs = empService.assignProject(empno,projId);
+		
+		assertNotNull(projs);
+	}
 	
 }
